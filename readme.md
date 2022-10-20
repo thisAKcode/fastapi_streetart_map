@@ -1,5 +1,12 @@
 ### fastapi for to serve geodata
 
+
+https://fastapi.tiangolo.com/advanced/templates/
+https://pybit.es/articles/how-to-handle-environment-variables-in-python/
+
+
+
+
 Access postges db with Python Fastapi backend and Leaflet.js. Use HTMX to minimize javascript complexity.
 
 Concept is visually presented here:
