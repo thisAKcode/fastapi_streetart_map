@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException, Path, Depends
 from config import SessionLocal
 from sqlalchemy.orm import Session
-from schemas import BookSchema, RequestBook, Response
+from schemas import ArtItemSchema, RequestArtItem, Response
 import crud
 
 router = APIRouter()
@@ -14,37 +14,40 @@ def get_db():
         db.close()
 
 @router.post('/create')
-async def create(request:RequestBook, db:Session=Depends(get_db)):
-    crud.create_book(db, book = request.parameter)
-    return Response(code=200, status="Ok", message="Book created succesfully").dict(exclude_none=True) 
+async def create(request:RequestArtItem, db:Session=Depends(get_db)):
+    crud.create_art_item(db, art_item = request.parameter)
+    return Response(code=200, status="Ok", message="ArtItem created succesfully").dict(exclude_none=True) 
 
 @router.get('/')
 async def get(db:Session=Depends(get_db)):
-    _book = crud.get_book(db,0,100)
-    return Response(code=200, status="Ok", message="Success Fetch all data", result=_book).dict(exclude_none=True)
+    _art_item = crud.get_art_item(db,0,100)
+    return Response(code=200, status="Ok", message="Success Fetch all data", result=_art_item).dict(exclude_none=True)
 
 @router.get('/{id}')
 async def get_by_id(id:int,db:Session = Depends(get_db)):
-    _book = crud.get_book_by_id(db, id)
-    return Response(code=200, status="Ok", message="Success get data", result=_book).dict(exclude_none=True)
+    _art_item = crud.get_art_item_by_id(db, id)
+    return Response(code=200, status="Ok", message="Success get data", result=_art_item).dict(exclude_none=True)
 
 
 @router.post('/update')
-async def update_book(request:RequestBook, db:Session=Depends(get_db)):
-    _book = crud.update_book(db,book_id = request.parameter.id, 
+async def update_art_item(request:RequestArtItem, db:Session=Depends(get_db)):
+    _art_item = crud.update_art_item(db,art_item_id = request.parameter.id, 
             title = request.parameter.title,
-            description=request.parameter.description)
+            description=request.parameter.description,
+            lat=request.parameter.lat,
+            lon=request.parameter.lon,
+            image_one =request.parameter.image_one,
+            image_two =request.parameter.image_two
+            )
     return Response(code=200, status="Ok", 
                     message="Success update data",
-                    result=_book).dict(exclude_none=True)
+                    result=_art_item).dict(exclude_none=True)
 
 
 @router.delete('/{id}')
-async def delete(request:RequestBook, db:Session=Depends(get_db)):
-    _book = crud.update_book(db,book_id = request.parameter.id, 
-            title = request.parameter.title,
-            description=request.parameter.description)
+async def delete(request:RequestArtItem, db:Session=Depends(get_db)):
+    _art_item = crud.remove_art_item(db,art_item_id = request.parameter.id)
     return Response(code=200, status="Ok", 
                     message="Success update data", 
-                        result=_book).dict(exclude_none=True)
+                        result=_art_item).dict(exclude_none=True)
 
