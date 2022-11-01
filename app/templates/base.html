@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>fastapi_leaflet</title>
+        <meta charset="utf-8">
+          <meta name="viewport" content="width=device=width, initial-scale=1">
+            <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+  </head>
+  <h1> base template </h1>
+  <body>
+    <!-- navigation bar HTML -->
+    <div>
+      <a href="/">home</a>
+       | 
+      <a href="/items">Items</a>
+    </div>
+    {% block content %}
+    {% endblock %}
+  </body>
+</html>
