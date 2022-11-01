@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+  <div>
+    <a href="/">back home</a>
+  </div>
+  
+  <head>
+    <title>fastapi_leaflet</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device=width, initial-scale=1">
+        <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+      integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+      crossorigin=""/>
+      <!-- Make sure you put this AFTER Leaflet's CSS -->
+        <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+    integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+    crossorigin=""></script>
+        <script src="https://unpkg.com/htmx.org@1.5.0"></script>
+        <link rel="stylesheet" href="./static/loci_map.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+
+  </head>
+  
+  <h1> base template </h1>
+  <body>
+    {% for _item in locs[1:3] %}
+      <p> value="{{ _item.description }}">{{ _item.lat, _item.lat}}</p>
+    {% endfor %}
+    <div id="mapid"></div>
+    <script src="/static/loci.js"></script>
+  </body>
+</html>

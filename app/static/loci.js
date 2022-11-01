@@ -1,3 +1,4 @@
+console.log('here we go')
 center = [59.377226772242814, 13.516237456465513];
 
 
@@ -12,9 +13,9 @@ function makeMap() {
 var layer = L.layerGroup();
 
 
-function centerMap(location_id) {
-    var lociEndPoint = "/location/" + location_id
-    $.getJSON(lociEndPoint, 
+function centerMap() {
+    var artEndpoint = "/map/";
+    $.getJSON(artEndpoint, 
     function(obj) {  // function(obj) {} used to get data
         var toCenterPoint = obj.data[0]  // grab first coordinate pair to be used as center
         var markers = obj.data.map(function(arr) { 
@@ -31,8 +32,8 @@ function centerMap(location_id) {
 /* https://stackoverflow.com/a/23880244/12163779
    https://stackoverflow.com/a/55268599/12163779 */
 function renderData(location_id) {
-    var lociEndPoint = "/location/" + location_id;
-    $.getJSON(lociEndPoint, 
+    var artEndpoint = "/map/";
+    $.getJSON(artEndpoint, 
     function(obj) {  // for each subArray in the data array https://stackoverflow.com/a/47461128
         console.log('here');
         console.log(obj.data);
@@ -55,8 +56,8 @@ function renderData(location_id) {
 };
 
 function fixPopup(location_id) {
-    var lociEndPoint = "/location/" + location_id
-    $.getJSON(lociEndPoint, 
+    var artEndpoint = "/map/";
+    $.getJSON(artEndPoint, 
     function(obj) {  // for each subArray in the data array https://stackoverflow.com/a/47461128
         var markers = obj.data.map(function(arr) { 
             var _popups = L.circleMarker([arr[0], arr[1]], { radius: 5,
