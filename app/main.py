@@ -1,47 +1,34 @@
 import model
 import router
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request, Depends
 from fastapi.responses import HTMLResponse
-from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
-from config import engine
+from sqlalchemy.orm import Session
+from config import SessionLocal, engine, get_db
+from populate_db import insert_items, data_loader, DUMMY_DATA
 
 
 model.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
-templates = Jinja2Templates(directory="/templates")
+templates = Jinja2Templates(directory="templates")
 
-# app.mount("/", StaticFiles(directory="/"))
-app.mount("/templates", StaticFiles(directory="templates",html = True), name="templates")
 
-@app.get('/')
-async def Home(request:Request):
-    html_content = """
-    <html>
-        <head>
-            <title>Some HTML in here</title>
-        </head>
-        <body> <h1>startpage</h1></body>
-    </html>
-    """
-    return HTMLResponse(content=html_content, status_code=200)
+# populate_db if records are not already there.
+@app.on_event("startup")
+async def startup_populate_db():
+    db = SessionLocal()
+    item_count = db.query(model.ArtItem).count()
+    if item_count == 0:
+        insert_items(DUMMY_DATA)
 
-def generate_html_response():
-    html_content = """
-    <html>
-        <head>
-            <title>Some HTML in here</title>
-        </head>
-        <body>
-            <h1>some items</h1>
-        </body>
-    </html>
-    """
-    return HTMLResponse(content=html_content, status_code=200)
+@app.get("/map/", response_class=HTMLResponse)
+async def _map(
+    request:Request,
+    db:Session = Depends(get_db)
+    ):
+    locations1 = db.query(model.ArtItem).all() # []
+    context = {'request': request, 'locs':locations1}
+    return templates.TemplateResponse("map.html", context) 
 
-@app.get("/items/", response_class=HTMLResponse)
-async def read_items():
-    return generate_html_response()
-
-app.include_router(router.router, prefix='/art_item', tags=["art_item"])
+app.include_router(router.app, tags=["art"])

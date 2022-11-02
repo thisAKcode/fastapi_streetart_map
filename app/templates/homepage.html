@@ -1,0 +1,33 @@
+
+<!DOCTYPE html>
+
+<html>
+      <!-- navigation bar HTML -->
+      <div>
+        <a href="/map/">map</a>
+
+    </div>
+  <head>
+    <title>fastapi_leaflet</title>
+        <meta charset="utf-8">
+          <meta name="viewport" content="width=device=width, initial-scale=1">
+            <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+  </head>
+ 
+  <h1> base _____ where are my stuff </h1>
+  <body>
+    
+  <p> right here : {{_items[0:10]}}</p>
+    {% for _item in _items[0:3] %}
+      <p> value="{{ _item.description }}">{{ _item.lat, _item.lat}}</p>
+    {% endfor %}
+  </p>
+  
+  
+  </body>
+</html>
+
+
+
+
+{% extends "navbar.html" %}
