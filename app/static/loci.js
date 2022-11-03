@@ -2,13 +2,13 @@ console.log('here we go')
 center = [59.377226772242814, 13.516237456465513];
 
 
-
 function makeMap() {
     var TILE_URL = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
     var MB_ATTR = 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors';
-    mymap = L.map('mapid').setView(center, 14);
+    mymap = L.map('mapid').setView(center, 5);
     L.tileLayer(TILE_URL, {attribution: MB_ATTR}).addTo(mymap);
 }
+
 
 var layer = L.layerGroup();
 
@@ -31,13 +31,14 @@ function centerMap() {
 // Markers adding numbers
 /* https://stackoverflow.com/a/23880244/12163779
    https://stackoverflow.com/a/55268599/12163779 */
-function renderData(location_id) {
+function renderData() {
     var artEndpoint = "/map/";
+    console.log('i was ___')
     $.getJSON(artEndpoint, 
     function(obj) {  // for each subArray in the data array https://stackoverflow.com/a/47461128
         console.log('here');
-        console.log(obj.data);
-        var markers = obj.data.map(function(arr) { 
+        console.log(obj.locs);
+        var markers = obj.locs.map(function(arr) { 
             var _circles = L.circleMarker([arr[0], arr[1]], { 
                 radius: 5,
                 fillColor: 'blue',
@@ -55,7 +56,7 @@ function renderData(location_id) {
     });
 };
 
-function fixPopup(location_id) {
+function fixPopup() {
     var artEndpoint = "/map/";
     $.getJSON(artEndPoint, 
     function(obj) {  // for each subArray in the data array https://stackoverflow.com/a/47461128
@@ -77,12 +78,15 @@ function fixPopup(location_id) {
 
 $(function() {
     makeMap();
-    renderData('Karlstad center'); // pick up location with such name to render first 
-    $('#loc_option').change(function() {
+ 
+    renderData(); // pick up location with such name to render first 
+    /*$('#loc_option').change(function() {
         var val = $('#loc_option option:selected').val();
         
         renderData(val);
         //fixPopup(val);
         centerMap(val);
     });
+    */
+    centerMap();
 });
