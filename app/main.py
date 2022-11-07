@@ -59,7 +59,9 @@ async def _map(
     request:Request,
     db:Session = Depends(get_db)
     ):
-    #locations1 = db.query(model.ArtItem).all() # []
+    locations1 = db.query(model.ArtItem).all() # []
+    print(type(locations1[0]))
+    #locs = json.dumps({"message": "fine"}, indent = 4)
     json_object = json.dumps({"message": "fine"}, indent = 4)
     return json_object
 

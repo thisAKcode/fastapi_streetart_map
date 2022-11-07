@@ -1,10 +1,14 @@
-console.log('here we go')
 center = [59.377226772242814, 13.516237456465513];
 
-//var url = 'http://localhost:8000';
-fetch('http://127.0.0.1:8000/')
-.then(res => res.json())
+var url = 'http://127.0.0.1:8000/map2/';
+
+fetch(url)
+//.then(console.log('try to parse json'))
+.then(context => context.json())
 .then(data => {console.log(data)})
+
+// https://stackoverflow.com/questions/61202940/javascript-how-to-store-fetch-data-to-a-global-variable
+// https://stackoverflow.com/questions/14220321/how-do-i-return-the-response-from-an-asynchronous-call
 
 
 function makeMap() {
@@ -37,14 +41,15 @@ function centerMap() {
 /* https://stackoverflow.com/a/23880244/12163779
    https://stackoverflow.com/a/55268599/12163779 */
 function renderData() {
-    var artEndpoint = "/map/";
-    console.log('i was ___miau')
+    var artEndpoint = "/map2/";
     console.log(artEndpoint)
 
     $.getJSON(artEndpoint, 
     function(obj) {  // for each subArray in the data array https://stackoverflow.com/a/47461128
         console.log('here');
-        console.log(obj.locs);
+        console.log('again')
+        console.log(obj);
+        console.log(' 222')
         var markers = obj.locs.map(function(arr) { 
             var _circles = L.circleMarker([arr[0], arr[1]], { 
                 radius: 5,
