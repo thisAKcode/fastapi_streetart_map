@@ -1,6 +1,11 @@
 console.log('here we go')
 center = [59.377226772242814, 13.516237456465513];
 
+//var url = 'http://localhost:8000';
+fetch('http://127.0.0.1:8000/')
+.then(res => res.json())
+.then(data => {console.log(data)})
+
 
 function makeMap() {
     var TILE_URL = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
