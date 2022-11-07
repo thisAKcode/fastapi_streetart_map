@@ -32,4 +32,8 @@ async def _map(
     context = {'request': request, 'locs':locations1}
     return templates.TemplateResponse("map.html", context) 
 
+@app.post("/map/")
+async def pass_item():
+    return 'abc'
+
 app.include_router(router.app, tags=["art"])

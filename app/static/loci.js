@@ -33,7 +33,9 @@ function centerMap() {
    https://stackoverflow.com/a/55268599/12163779 */
 function renderData() {
     var artEndpoint = "/map/";
-    console.log('i was ___')
+    console.log('i was ___miau')
+    console.log(artEndpoint)
+
     $.getJSON(artEndpoint, 
     function(obj) {  // for each subArray in the data array https://stackoverflow.com/a/47461128
         console.log('here');
@@ -49,7 +51,9 @@ function renderData() {
                 pane: 'markerPane'  }).bindTooltip(arr[2], {pane: 'tooltipPane', sticky: true, 
                                                             permanent: false, opacity: 0.7}).openTooltip() 
             return _circles 
-        });
+                                                }
+                                );
+        
         mymap.removeLayer(layer);
         layer = L.layerGroup(markers);
         mymap.addLayer(layer);
