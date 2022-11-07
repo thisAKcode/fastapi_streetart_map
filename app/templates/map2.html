@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+  <div>
+    <a href="/">back home</a>
+  </div>
+  
+  <head>
+    <title>fastapi_leaflet</title>
+
+
+  </head>
+  
+  <h1> base template </h1>
+  <body>
+    <script>
+      //var url = 'http://localhost:8000';
+      fetch('http://127.0.0.1:8000/')
+      .then(res => res.json())
+      .then(data => {console.log(data)})
+  </script>
+  </body>
+</html>
