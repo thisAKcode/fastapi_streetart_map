@@ -10,7 +10,7 @@ function makeMap() {
 
 var layer = L.layerGroup();
 
-
+/*
 function centerMap() {
     var artEndpoint = "/map/";
     $.getJSON(artEndpoint, 
@@ -24,6 +24,7 @@ function centerMap() {
         mymap.fitBounds(group.getBounds());
     });
 };
+*/
 
 // TO DO numbered markers add'
 // Markers adding numbers
@@ -41,12 +42,11 @@ function renderData() {
                 weight: 0.5,
                 opacity: 1,
                 fillOpacity: 0.5,
-                pane: 'markerPane'  }).bindTooltip(arr.title, {pane: 'tooltipPane', sticky: true, 
-                                                            permanent: true, opacity: 0.7}).openTooltip() 
+                pane: 'markerPane'  }).bindTooltip(`My name is and I am ${arr.title} years old`, {pane: 'tooltipPane', sticky: true, 
+                                                            permanent: false, opacity: 0.7}).openTooltip() 
             return _circles 
-            
-                                                }
-                                );
+            }
+            );
         
         mymap.removeLayer(layer);
         layer = L.layerGroup(markers);
@@ -55,23 +55,45 @@ function renderData() {
 };
 
 function fixPopup() {
-    var artEndpoint = "/map/";
-    $.getJSON(artEndPoint, 
+    var artEndpoint = "/map2/";
+    $.getJSON(artEndpoint, 
     function(obj) {  // for each subArray in the data array https://stackoverflow.com/a/47461128
         var markers = obj.data.map(function(arr) { 
-            var _popups = L.circleMarker([arr[0], arr[1]], { radius: 5,
+            var _popups = L.circleMarker([arr.lat, arr.lon], {  radius: 5,
                 fillColor: 'blue',
                 color: 'blue',
                 weight: 0.5,
                 opacity: 0.1,
                 fillOpacity: 0.1,
-                pane: 'markerPane'  }).bindPopup(arr[2]).openPopup() 
+                pane: 'markerPane'  }).bindPopup(arr.title + '<br>' + "<img src='"+arr.image_two+"'/>",
+                {
+                    maxWidth: "auto"
+                  }).openPopup() 
             return _popups 
         });
         layer = L.layerGroup(markers);
         mymap.addLayer(layer);
     });
 };
+
+
+function fixPopup2() {
+    var artEndpoint = "/map2/";
+    $.getJSON(artEndpoint, 
+    function(obj) {  // for each subArray in the data array https://stackoverflow.com/a/47461128
+        var markers = obj.data.map(function(arr) { 
+            var _latlng = L.latLng(arr.lat, arr.lon);
+            var _popups = L.popup()
+            .setLatLng(_latlng)
+            .setContent('<p>Hello world!<br />This is a nice popup.</p>')
+            .openOn(mymap);
+            return _popups 
+        });
+        layer = L.layerGroup(markers);
+        mymap.addLayer(layer);
+    });
+};
+
 
 
 $(function() {
@@ -86,5 +108,7 @@ $(function() {
         centerMap(val);
     });
     */
+    fixPopup();
+    //fixPopup2();
     centerMap();
 });
