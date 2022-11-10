@@ -1,5 +1,5 @@
-console.log('here we go')
-center = [59.377226772242814, 13.516237456465513];
+var CENTER = [59.09827437369457, 13.115860356662202];
+
 
 //var url = 'http://localhost:8000';
 fetch('http://127.0.0.1:8000/')
@@ -10,28 +10,22 @@ fetch('http://127.0.0.1:8000/')
 function makeMap() {
     var TILE_URL = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
     var MB_ATTR = 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors';
-    mymap = L.map('mapid').setView(center, 5);
+    mymap = L.map('mapid').setView(CENTER, 3);
+
     L.tileLayer(TILE_URL, {attribution: MB_ATTR}).addTo(mymap);
 }
 
 
 var layer = L.layerGroup();
 
-/*
+
 function centerMap() {
-    var artEndpoint = "/map/";
-    $.getJSON(artEndpoint, 
-    function(obj) {  // function(obj) {} used to get data
-        var toCenterPoint = obj.data[0]  // grab first coordinate pair to be used as center
-        var markers = obj.data.map(function(arr) { 
-            return L.marker([arr[0], arr[1]])
-        });
-        mymap.setView(toCenterPoint, 14, { animation: true });
-        var group = new L.featureGroup(markers);
-        mymap.fitBounds(group.getBounds());
-    });
-};
-*/
+    var toCenterPoint = CENTER  // grab first coordinate pair to be used as center
+    //var marker = L.marker(CENTER)
+    mymap.setView(toCenterPoint, 1, { animation: true });
+    //var group = new L.featureGroup(marker);
+    //mymap.fitBounds(group.getBounds());
+    };
 
 // TO DO numbered markers add'
 // Markers adding numbers

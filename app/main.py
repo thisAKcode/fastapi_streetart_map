@@ -8,7 +8,7 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 from config import SessionLocal, engine, get_db
-from populate_db import insert_items, data_loader, DUMMY_DATA
+from populate_db import insert_items, DUMMY_DATA
 
 
 model.Base.metadata.create_all(bind=engine)
