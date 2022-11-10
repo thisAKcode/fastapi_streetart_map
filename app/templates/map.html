@@ -37,6 +37,9 @@
         </style>
   <h1> base template </h1>
   <body>
+    {% for _item in locs[1:3] %}
+      <p> value="{{ _item.description }}">{{ _item.lat, _item.lat}}</p>
+    {% endfor %}
     <div id="mapid"></div>
     <script src="/static/loci.js"></script>
   </body>
