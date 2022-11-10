@@ -6,7 +6,6 @@ from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.encoders import jsonable_encoder
 from sqlalchemy.orm import Session
 from config import SessionLocal, engine, get_db
 from populate_db import insert_items, DUMMY_DATA
@@ -60,7 +59,8 @@ async def _map(
     request:Request,
     db:Session = Depends(get_db)
     ):
-    locations = db.query(model.ArtItem).all()
-    locs = [jsonable_encoder(_item) for _item in locations]
-    return json.dumps({"data": locs}, indent = 4)
+    #locations1 = db.query(model.ArtItem).all() # []
+    json_object = json.dumps({"message": "fine"}, indent = 4)
+    return json_object
+
 app.include_router(router.app, tags=["art"])
