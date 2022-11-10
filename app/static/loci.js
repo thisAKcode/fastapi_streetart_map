@@ -1,9 +1,16 @@
+console.log('here we go')
 center = [59.377226772242814, 13.516237456465513];
+
+//var url = 'http://localhost:8000';
+fetch('http://127.0.0.1:8000/')
+.then(res => res.json())
+.then(data => {console.log(data)})
+
 
 function makeMap() {
     var TILE_URL = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
     var MB_ATTR = 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors';
-    mymap = L.map('mapid').setView(center, 3);
+    mymap = L.map('mapid').setView(center, 5);
     L.tileLayer(TILE_URL, {attribution: MB_ATTR}).addTo(mymap);
 }
 
@@ -30,21 +37,25 @@ function centerMap() {
 /* https://stackoverflow.com/a/23880244/12163779
    https://stackoverflow.com/a/55268599/12163779 */
 function renderData() {
-    var artEndpoint = "/map2/";
+    var artEndpoint = "/map/";
+    console.log('i was ___miau')
+    console.log(artEndpoint)
+
     $.getJSON(artEndpoint, 
     function(obj) {  // for each subArray in the data array https://stackoverflow.com/a/47461128
-        var markers = obj.data.map(function(arr) { 
-            var _circles = L.circleMarker([arr.lat, arr.lon], { 
+        console.log('here');
+        console.log(obj.locs);
+        var markers = obj.locs.map(function(arr) { 
+            var _circles = L.circleMarker([arr[0], arr[1]], { 
                 radius: 5,
                 fillColor: 'blue',
                 color: 'blue',
                 weight: 0.5,
                 opacity: 1,
                 fillOpacity: 0.5,
-                pane: 'markerPane'  }).bindTooltip(arr.title, {pane: 'tooltipPane', sticky: true, 
-                                                            permanent: true, opacity: 0.7}).openTooltip() 
+                pane: 'markerPane'  }).bindTooltip(arr[2], {pane: 'tooltipPane', sticky: true, 
+                                                            permanent: false, opacity: 0.7}).openTooltip() 
             return _circles 
-            
                                                 }
                                 );
         
