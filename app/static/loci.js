@@ -1,12 +1,6 @@
 var CENTER = [59.09827437369457, 13.115860356662202];
 
 
-//var url = 'http://localhost:8000';
-fetch('http://127.0.0.1:8000/')
-.then(res => res.json())
-.then(data => {console.log(data)})
-
-
 function makeMap() {
     var TILE_URL = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
     var MB_ATTR = 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors';
@@ -106,7 +100,7 @@ function fixPopup2() {
 $(function() {
     makeMap();
  
-    renderData(); // pick up location with such name to render first 
+    //renderData(); // pick up location with such name to render first 
     /*$('#loc_option').change(function() {
         var val = $('#loc_option option:selected').val();
         
