@@ -1,12 +1,8 @@
-### fastapi for serving geospatial data
+# fastapi for serving geospatial data
 
-# Stack: Fastapi, JQuery & Leaflet
+Stack: Fastapi, JQuery & Leaflet
 
-I use FastAPI to serve data from a database. 
-Data loaded into db from json. Each of these objects contains lat, lon,
-
-
-The project consists of two parts: a backend stack including server/fastapi app and tools for visualizing data.
+I use FastAPI to serve data from a database. Data loaded into db from json. Each of these objects contains lat, lon. The project consists of two parts: a backend stack including server/fastapi app and tools for visualizing data.
 
 ## Backend
 
