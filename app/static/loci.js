@@ -16,19 +16,13 @@ var layer = L.layerGroup();
 function centerMap() {
     var toCenterPoint = CENTER  // grab first coordinate pair to be used as center
     //var marker = L.marker(CENTER)
-    mymap.setView(toCenterPoint, 1, { animation: true });
-    //var group = new L.featureGroup(marker);
-    //mymap.fitBounds(group.getBounds());
+    mymap.setView(toCenterPoint, 1.5, { animation: true });
+
     };
 
-// TO DO numbered markers add'
-// Markers adding numbers
-/* https://stackoverflow.com/a/23880244/12163779
-   https://stackoverflow.com/a/55268599/12163779 */
+
 function renderData() {
     var artEndpoint = "/map/";
-    console.log('i was ___miau')
-    console.log(artEndpoint)
 
     $.getJSON(artEndpoint, 
     function(obj) {  // for each subArray in the data array https://stackoverflow.com/a/47461128

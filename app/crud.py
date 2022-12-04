@@ -1,20 +1,20 @@
 from sqlalchemy.orm import Session
-from model import ArtItem
-from schemas import ArtItemSchema
+from model import Item
+from schemas import ItemSchema
 
 
 # Get All art_item data
 def get_art_item(db:Session, skip:int=0, limit:int=100):
-    return db.query(ArtItem).offset(skip).limit(limit).all()
+    return db.query(Item).offset(skip).limit(limit).all()
 
 
 # get by id art_item
 def get_art_item_by_id(db:Session, art_item_id:int):
-    return db.query(ArtItem).filter(ArtItem.id == art_item_id).first()
+    return db.query(Item).filter(Item.id == art_item_id).first()
 
 # Create art_item data 
-def create_art_item(db:Session, art_item: ArtItemSchema):
-    _art_item = ArtItem(title=art_item.title, 
+def create_art_item(db:Session, art_item: ItemSchema):
+    _art_item = Item(title=art_item.title, 
                         description=art_item.description,
                         lat = art_item.lat,
                         lon = art_item.lon,

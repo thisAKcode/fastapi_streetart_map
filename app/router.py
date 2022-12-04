@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Request, HTTPException, Path, Depends
 from config import get_db
 from sqlalchemy.orm import Session
-from schemas import ArtItemSchema, RequestArtItem, Response
+from schemas import ItemSchema, RequestItem, Response
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 from fastapi.templating import Jinja2Templates
@@ -18,7 +18,7 @@ async def favicon():
     return FileResponse(favicon_path)
 
 @app.post('/create')
-async def create(request:RequestArtItem, db:Session=Depends(get_db)):
+async def create(request:RequestItem, db:Session=Depends(get_db)):
     crud.create_art_item(db, art_item = request.parameter)
     return Response(code=200, status="Ok", message="ArtItem created succesfully").dict(exclude_none=True)
 
@@ -36,7 +36,7 @@ async def get_by_id(id:int,db:Session = Depends(get_db)):
 
 
 @app.post('/update')
-async def update_art_item(request:RequestArtItem, db:Session=Depends(get_db)):
+async def update_art_item(request:RequestItem, db:Session=Depends(get_db)):
     _art_item = crud.update_art_item(db,art_item_id = request.parameter.id,
             title = request.parameter.title,
             description=request.parameter.description,
@@ -51,7 +51,7 @@ async def update_art_item(request:RequestArtItem, db:Session=Depends(get_db)):
 
 
 @app.delete('/{id}')
-async def delete(request:RequestArtItem, db:Session=Depends(get_db)):
+async def delete(request:RequestItem, db:Session=Depends(get_db)):
     _art_item = crud.remove_art_item(db,art_item_id = request.parameter.id)
     return Response(code=200, status="Ok",
                     message="Success update data",
