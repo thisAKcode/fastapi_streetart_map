@@ -7,17 +7,17 @@ T = TypeVar('T')
 class DataSetSchema(BaseModel):
     id: Optional[int] = None
     name: Optional[str] = None
+    owner: Optional[str] = None
     items: List["ItemSchema"] = []
 
 
 class ItemSchema(BaseModel):
     id: Optional[int] = None
-    title: Optional[str] = None
-    lat: Optional[float] = None
-    lon: Optional[float] = None
-    description: Optional[str]=None
-    image_one: Optional[bytes] = None
-    image_two: Optional[str] = None
+    dataset_id: Optional[int] = None
+    #lat: Optional[float] = None
+    #lon: Optional[float] = None
+    _data: Optional[str]=None
+    dataset: Optional["DataSetSchema"] = None
 
     class Config:
         orm_mode = True

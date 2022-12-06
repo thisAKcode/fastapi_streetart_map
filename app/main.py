@@ -38,7 +38,12 @@ app.add_middleware(
 @app.on_event("startup")
 async def startup_populate_db():
     db = SessionLocal()
-    item_count = db.query(model.Item).count()
+    print('step####################################')
+    item_count = 0
+    try:
+        item_count = db.query(model.Item).count()
+    except:
+        item_count == 0
     if item_count == 0:
         insert_items(DUMMY_DATA)
 

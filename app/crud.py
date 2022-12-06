@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 from model import Item
-from schemas import ItemSchema
+from schemas import ItemSchema, DataSetSchema
 
 
 # Get All art_item data
