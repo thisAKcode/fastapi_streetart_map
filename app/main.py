@@ -38,7 +38,12 @@ app.add_middleware(
 @app.on_event("startup")
 async def startup_populate_db():
     db = SessionLocal()
-    item_count = db.query(model.ArtItem).count()
+    print('step####################################')
+    item_count = 0
+    try:
+        item_count = db.query(model.Item).count()
+    except:
+        item_count == 0
     if item_count == 0:
         insert_items(DUMMY_DATA)
 
@@ -47,7 +52,7 @@ async def _map(
     request:Request,
     db:Session = Depends(get_db)
     ):
-    locations1 = db.query(model.ArtItem).all() # []
+    locations1 = db.query(model.Item).all() # []
     context = {'request': request, 'locs':locations1}
     return templates.TemplateResponse("map.html", context) 
 
@@ -60,7 +65,7 @@ async def _map(
     request:Request,
     db:Session = Depends(get_db)
     ):
-        locations = db.query(model.ArtItem).all()
+        locations = db.query(model.Item).all()
         locs = [jsonable_encoder(_item) for _item in locations]
         return json.dumps({"data": locs}, indent = 4)
 
