@@ -1,5 +1,6 @@
 import os
 import json
+import uuid
 from sqlalchemy import func
 from config import engine,get_db, SessionLocal, USER
 from dotenv import load_dotenv
@@ -35,30 +36,18 @@ def insert_items(_path_to_input):
     _features2 = to_geojson(_rawdata)
     
     _ds_id = 0
-    '''
-    try:
-        _ds_id = db.query(func.max(DataSet.id))
-    except:
-        _ds_id = 0
-    '''
     _dataset = DataSet(id = _ds_id,
                        name = _filename,
                        owner = USER)
     
     db.add(_dataset)
-    feature_cnt = 0
     for _feature in _features2:
         _info = json.dumps(_feature)
-        # print(_info)
-        _id = feature_cnt
+        _id = str(uuid.uuid4()) 
         _item = Item(id = _id,
-                        dataset_id = _ds_id,
-                        _data = _info
-                        )
+                    dataset_id = _ds_id,
+                    _data = _info
+                    )
         db.add(_item)
-    
-        feature_cnt += 1
-    # db.add(_dataset)
-    db.commit()
-    print('passed')
+    db.commit() 
     db.close()

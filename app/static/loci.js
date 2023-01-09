@@ -1,109 +1,87 @@
 var CENTER = [59.09827437369457, 13.115860356662202];
 
-
 function makeMap() {
     var TILE_URL = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
     var MB_ATTR = 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors';
-    mymap = L.map('mapid').setView(CENTER, 3);
-
+    mymap = L.map('mapid').setView(CENTER, 5);
     L.tileLayer(TILE_URL, {attribution: MB_ATTR}).addTo(mymap);
 }
 
 
 var layer = L.layerGroup();
-
+//var myLayer = L.geoJSON();
+//myLayer.addData(geojsonFeature);
 
 function centerMap() {
-    var toCenterPoint = CENTER  // grab first coordinate pair to be used as center
-    //var marker = L.marker(CENTER)
-    mymap.setView(toCenterPoint, 1.5, { animation: true });
-
+    mymap.setView(CENTER, 1.5, { animation: true });
     };
 
+//image_two    
+function style_popup(feature, layer) {
+        // does this feature have a property named popupContent?
+        if (feature.properties && feature.properties.image_two) {
+            let _image_in =  "<img src='"+ feature.properties.image_two+"'/>"
+            layer.bindPopup(_image_in);
+        }
+    }
 
-function renderData() {
-    var artEndpoint = "/map/";
+function relevantPopup(feature_in){
+    return "<img src='"+ feature_in.properties.image_two+"'/>" 
+}
 
-    $.getJSON(artEndpoint, 
-    function(obj) {  // for each subArray in the data array https://stackoverflow.com/a/47461128
-        console.log('here');
-        console.log(obj.locs);
-        var markers = obj.locs.map(function(arr) { 
-            var _circles = L.circleMarker([arr[0], arr[1]], { 
-                radius: 5,
-                fillColor: 'blue',
-                color: 'blue',
-                weight: 0.5,
-                opacity: 1,
-                fillOpacity: 0.5,
-                pane: 'markerPane'  }).bindTooltip(`My name is and I am ${arr.title} years old`, {pane: 'tooltipPane', sticky: true, 
-                                                            permanent: false, opacity: 0.7}).openTooltip() 
-            return _circles 
-            }
-            );
+function pointAdder(_features) {
+    let _pointLayer = L.geoJSON(_features, {
+        pointToLayer: function (feature, latlng) {
+            return L.circleMarker(latlng, geojsonMarkerOptions).bindPopup(relevantPopup(feature), {
+                maxWidth: "auto"
+              });
+        }
+    })
+    return _pointLayer
+}
 
-        
-        mymap.removeLayer(layer);
-        layer = L.layerGroup(markers);
-        mymap.addLayer(layer);
-    });
+var geojsonMarkerOptions = {
+    radius: 5,
+        fillColor: 'blue',
+        color: 'blue',
+        weight: 0.5,
+        opacity: 0.1,
+        fillOpacity: 0.3,
+};    
+
+function _render_pts(_features){
+    let _ptsFeatures = pointAdder(_features)
+        console.log(typeof(_ptsFeatures))
+        _ptsFeatures.addTo(mymap);
 };
 
-function fixPopup() {
+function _render_items() {
     var artEndpoint = "/map2/";
     $.getJSON(artEndpoint, 
     function(obj) {  // for each subArray in the data array https://stackoverflow.com/a/47461128
-        var markers = obj.data.map(function(arr) { 
-            var _popups = L.circleMarker([arr.lat, arr.lon], {  radius: 5,
-                fillColor: 'blue',
-                color: 'blue',
-                weight: 0.5,
-                opacity: 0.1,
-                fillOpacity: 0.1,
-                pane: 'markerPane'  }).bindPopup(arr.title + '<br>' + "<img src='"+arr.image_two+"'/>",
-                {
-                    maxWidth: "auto"
-                  }).openPopup() 
-            return _popups 
+        var _features = obj.data.map(function(_item_1b1) {
+           return _item_1b1
         });
-        layer = L.layerGroup(markers);
-        mymap.addLayer(layer);
+        let geomTypes = _features.map(function (marker) {
+            return marker.geometry.type;
+          });        
+        if (geomTypes[0] == 'Point') {
+            _render_pts(_features) 
+        } else {
+            console.log('I only can process points by now') // code is executed
+        }
     });
 };
 
-
-function fixPopup2() {
-    var artEndpoint = "/map2/";
-    $.getJSON(artEndpoint, 
-    function(obj) {  // for each subArray in the data array https://stackoverflow.com/a/47461128
-        var markers = obj.data.map(function(arr) { 
-            var _latlng = L.latLng(arr.lat, arr.lon);
-            var _popups = L.popup()
-            .setLatLng(_latlng)
-            .setContent('<p>Hello world!<br />This is a nice popup.</p>')
-            .openOn(mymap);
-            return _popups 
-        });
-        layer = L.layerGroup(markers);
-        mymap.addLayer(layer);
-    });
-};
-
-
+function onEachFeature(feature, layer) {
+    // does this feature have a property named popupContent?
+    if (feature.properties && feature.properties.popupContent) {
+        layer.bindPopup('test');
+    }
+}
 
 $(function() {
     makeMap();
- 
-    //renderData(); // pick up location with such name to render first 
-    /*$('#loc_option').change(function() {
-        var val = $('#loc_option option:selected').val();
-        
-        renderData(val);
-        //fixPopup(val);
-        centerMap(val);
-    });
-    */
-    fixPopup();
-    //fixPopup2();
+    _render_items();
     centerMap();
 });

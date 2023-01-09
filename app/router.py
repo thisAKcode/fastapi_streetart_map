@@ -24,11 +24,11 @@ async def create(request:RequestItem, db:Session=Depends(get_db)):
 
 @app.get('/')
 async def get(request:Request, db:Session=Depends(get_db)):
-
-    _art_item = crud.get_art_item(db,0,100)
+    _loaded = crud.get_all_art_items(db,0,100) 
     # return Response(code=200, status="Ok", message="Success Fetch all data", result=_art_item).dict(exclude_none=True)
-    context = {"request": request, "_items": _art_item}
+    context = {"request": request, "_items": _loaded}
     return templates.TemplateResponse("homepage.html", context)
+
 @app.get('/{id}')
 async def get_by_id(id:int,db:Session = Depends(get_db)):
     _art_item = crud.get_art_item_by_id(db, id)

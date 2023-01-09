@@ -23,7 +23,6 @@ origins = [
     "http://localhost:8000",
     "http://localhost:8080",
     "http://localhost:8000/map/"
-
 ]
 
 app.add_middleware(
@@ -34,11 +33,10 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# populate_db if records are not already there.
+# populate_db if db_missing
 @app.on_event("startup")
 async def startup_populate_db():
     db = SessionLocal()
-    print('step####################################')
     item_count = 0
     try:
         item_count = db.query(model.Item).count()
@@ -52,13 +50,24 @@ async def _map(
     request:Request,
     db:Session = Depends(get_db)
     ):
-    locations1 = db.query(model.Item).all() # []
-    context = {'request': request, 'locs':locations1}
+    locations1 = db.query(model.Item).all()
+    # pass a list of dicts since templateResponse accept it as argument
+    # each item  <class 'str'> representation of json object:
+    #  {"type": "Feature", "geometry":.... }
+    
+    locs_all = [(jsonable_encoder(_item)['_data']) 
+                for _item in locations1] 
+    # ! TODO since several datasets may be stored the returning by groups is better
+    # but works for now
+    context = {'request': request, 
+               'locs':locs_all}
     return templates.TemplateResponse("map.html", context) 
 
+"""
 @app.post("/map/")
 async def pass_item():
     return 'abc'
+"""
 
 @app.get("/map2/", response_class=HTMLResponse)
 async def _map(
@@ -66,7 +75,7 @@ async def _map(
     db:Session = Depends(get_db)
     ):
         locations = db.query(model.Item).all()
-        locs = [jsonable_encoder(_item) for _item in locations]
+        # breakpoint()
+        locs = [json.loads(_item._data) for _item in locations]
         return json.dumps({"data": locs}, indent = 4)
-
 app.include_router(router.app, tags=["art"])

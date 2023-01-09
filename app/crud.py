@@ -1,15 +1,21 @@
 from sqlalchemy.orm import Session
-from model import Item
+from model import Item, DataSet
 from schemas import ItemSchema, DataSetSchema
 
 
 # Get All art_item data
-def get_art_item(db:Session, skip:int=0, limit:int=100):
-    return db.query(Item).offset(skip).limit(limit).all()
+def get_all_art_items(db:Session, skip:int=0, limit:int=100):
+    # get all datasets 
+    datasets = db.query(DataSet).all()
+    _items = [
+        db.query(Item).filter_by(dataset_id =_subdataset.id).all() 
+        for _subdataset in datasets
+    ]
+    return _items
 
-
+''' 
 # get by id art_item
-def get_art_item_by_id(db:Session, art_item_id:int):
+def get_art_item_by_id(db:Session, art_item_id:str):
     return db.query(Item).filter(Item.id == art_item_id).first()
 
 # Create art_item data 
@@ -48,3 +54,4 @@ def update_art_item(db:Session, art_item_id:int,
     db.commit()
     db.refresh(_art_item)
     return _art_item
+'''

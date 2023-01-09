@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+  
+  <head>
+    <title>fastapi_leaflet</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
+     integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI="
+     crossorigin=""/>
+     <!-- Make sure you put this AFTER Leaflet's CSS -->
+ <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
+ integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM="
+ crossorigin=""></script>
+  </head>
+  
+  <style>
+#map { height: 180px; }
+        </style>
+    <div id="map"></div>
+
+<script>
+
+var returned_json = {"_data": {"type": "Feature", 
+			"geometry": {
+				"type": "Point", "coordinates": [-88.072975, 14.875365]}, 
+				"properties": {
+								"title": "Night Time Sleep Aid", 
+								"description": "Verecker", 
+								"image_two": "http://dummyimage.com/155x100.png/ff4444/ffffff", 
+								"id": 2, 
+								"image_one": null
+								}
+			}, 
+			"id": "d1bef121-b914-4ddc-bf43-a02902ecc36d", 
+			"dataset_id": 0}
+
+
+var geojsonFeature = {"type": "Feature", "geometry": {"type": "Point", "coordinates": [-104.99404, 39.75621]}, "properties": {"title": "Night Time Sleep Aid", "description": "Verecker", "image_two": "http://dummyimage.com/155x100.png/ff4444/ffffff", "id": 2, "image_one": null}}
+
+var map = L.map('map').setView([39.75621,-104.99404], 13);
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+}).addTo(map);
+
+var myLayer = L.geoJSON().addTo(map);
+myLayer.addData(geojsonFeature);
+console.log('me')
+
+
+</script>
+
+</body>
+</html>
