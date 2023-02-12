@@ -17,10 +17,12 @@ templates = Jinja2Templates(directory="templates")
 async def favicon():
     return FileResponse(favicon_path)
 
+'''
 @app.post('/create')
 async def create(request:RequestItem, db:Session=Depends(get_db)):
     crud.create_art_item(db, art_item = request.parameter)
     return Response(code=200, status="Ok", message="ArtItem created succesfully").dict(exclude_none=True)
+'''
 
 @app.get('/')
 async def get(request:Request, db:Session=Depends(get_db)):
@@ -34,7 +36,7 @@ async def get_by_id(id:int,db:Session = Depends(get_db)):
     _art_item = crud.get_art_item_by_id(db, id)
     return Response(code=200, status="Ok", message="Success get data", result=_art_item).dict(exclude_none=True)
 
-
+'''
 @app.post('/update')
 async def update_art_item(request:RequestItem, db:Session=Depends(get_db)):
     _art_item = crud.update_art_item(db,art_item_id = request.parameter.id,
@@ -57,3 +59,5 @@ async def delete(request:RequestItem, db:Session=Depends(get_db)):
                     message="Success update data",
                         result=_art_item).dict(exclude_none=True)
 
+
+'''

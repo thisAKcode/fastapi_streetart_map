@@ -9,13 +9,14 @@ class DataSetSchema(BaseModel):
     name: Optional[str] = None
     owner: Optional[str] = None
     items: List["ItemSchema"] = []
+    
+    class Config:
+        orm_mode = True
 
 
 class ItemSchema(BaseModel):
     id: Optional[int] = None
     dataset_id: Optional[int] = None
-    #lat: Optional[float] = None
-    #lon: Optional[float] = None
     _data: Optional[str]=None
     dataset: Optional["DataSetSchema"] = None
 
@@ -25,7 +26,7 @@ class ItemSchema(BaseModel):
 class RequestItem(BaseModel):
     parameter: ItemSchema = Field(...)
 
-class Response (GenericModel, Generic[T]):
+class Response(GenericModel, Generic[T]):
     code: str
     status: str
     message: str

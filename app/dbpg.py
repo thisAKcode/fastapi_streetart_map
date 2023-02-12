@@ -1,4 +1,5 @@
 import os
+import model
 import json
 import uuid
 import psycopg2
@@ -44,13 +45,21 @@ def insert_items(_path_to_input):
     db.commit() 
     db.close()
 
+def _reader():
+    db = SessionLocal2()
+    locations1 = db.query(model.Item).all()
+    # print(locations1)
+
+class B(Exception):
+    pass
+
 # how to wrap database operations that need to be executed together in a single transaction
 def startup_populate_db():
     db = SessionLocal2()
     item_count = 0
     try:
         item_count = db.query(Item).count()
-    except:
+    except B: 
         item_count == 0
     if item_count == 0:
         insert_items(DUMMY_DATA)
@@ -145,3 +154,4 @@ if __name__ == "__main__":
     insert_mock_data()
     # Base.metadata.create_all(bind=engine2)
     startup_populate_db()
+    _reader()

@@ -10,7 +10,7 @@ from fastapi.encoders import jsonable_encoder
 from sqlalchemy.orm import Session
 from config import SessionLocal, engine, get_db
 from populate_db import insert_items, DUMMY_DATA
-
+from crud import get_all_art_items, create_art_item
 
 model.Base.metadata.create_all(bind=engine)
 
@@ -63,19 +63,14 @@ async def _map(
                'locs':locs_all}
     return templates.TemplateResponse("map.html", context) 
 
-"""
-@app.post("/map/")
-async def pass_item():
-    return 'abc'
-"""
 
 @app.get("/map2/", response_class=HTMLResponse)
 async def _map(
     request:Request,
     db:Session = Depends(get_db)
-    ):
-        locations = db.query(model.Item).all()
-        # breakpoint()
+    ):  
+        locations = get_all_art_items(db)
+        print(locations[0].dataset.name)
         locs = [json.loads(_item._data) for _item in locations]
         return json.dumps({"data": locs}, indent = 4)
 app.include_router(router.app, tags=["art"])
