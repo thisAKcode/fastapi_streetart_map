@@ -18,6 +18,7 @@ class ItemSchema(BaseModel):
     id: Optional[int] = None
     dataset_id: Optional[int] = None
     _data: Optional[str]=None
+    geometry: Optional[bytes]=None
     dataset: Optional["DataSetSchema"] = None
 
     class Config:

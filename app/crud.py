@@ -4,7 +4,10 @@ from model import Item, DataSet
 from config import USER
 from schemas import ItemSchema, DataSetSchema
 
-
+class DataSetNotFound(Exception):
+    pass
+    # doctstring to add 
+                      
 # Get All art_item data
 def get_all_art_items(db:Session, skip:int=0, _limit:int=30):
     # get all datasets 
@@ -21,29 +24,33 @@ def get_art_item_by_id(db:Session, art_item_id:str):
 
 # Create dataset
 def create_dataset(db:Session, dataset: DataSetSchema):
-    pass
-
-# Create art_item data 
-def create_art_item(db:Session, art_item: ItemSchema):
-    """datasets = [_dataset.name for _dataset in db.query(DataSet).all()]
-    max_ds_id = max([_dataset.id for _dataset in db.query(DataSet).all()])
+    print(f"create dataset {dataset}")
+    datasets = [_dataset.name for _dataset in db.query(DataSet).all()]
     # if dataset for given item is missing initiate it
-    if not art_item.dataset_name in datasets:
-        _dataset = DataSet(id = max_ds_id + 1,
-                           name = 'filename',
+    if not dataset.dataset_name in datasets:
+        _dataset = DataSet(name = dataset.filename,
                            owner = USER)
         db.add(_dataset)
+    db.commit()
+    db.refresh(_dataset)
+    return _dataset
+    
+# Create art_item data 
+def create_art_item(db:Session, dataset_id:int, art_item: ItemSchema):
+    # create dataset with id 10000 the default one
+    dataset = db.query(DataSet).one_or_none(dataset_id = dataset_id)
+    if not dataset:
+        # create default dataset
+        raise DataSetNotFound('use default dataset')
+    # create
     _art_item = Item(id =str(uuid.uuid4()),
                         title=art_item.title, 
-                        dataset_id=art_item.dataset_id,
                         _data = art_item._data,
-                        dataset = art_item.dataset.name)
+                        dataset = dataset) 
     db.add(_art_item)
     db.commit()
     db.refresh(_art_item)
     return _art_item
-    """
-    pass
 
 # Remove art_item data 
 def remove_art_item(db:Session, art_item_id:int):

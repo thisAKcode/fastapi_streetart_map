@@ -10,7 +10,7 @@ load_dotenv()
 
 pw = urllib.parse.quote_plus(os.environ.get('pw_pg'))
 
-DATABASE_URL_PG = f'postgresql://postgres:{pw}@localhost/mydb'
+DATABASE_URL_PG = f'postgresql://postgres:{pw}@localhost/mydb2'
 USER = 'Alex'
 engine = create_engine(DATABASE_URL_PG)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)

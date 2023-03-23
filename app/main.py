@@ -54,9 +54,9 @@ async def _map(
     # pass a list of dicts since templateResponse accept it as argument
     # each item  <class 'str'> representation of json object:
     #  {"type": "Feature", "geometry":.... }
-    
-    locs_all = [(jsonable_encoder(_item)['_data']) 
-                for _item in locations1] 
+    locs_all = [jsonable_encoder(_item._data) 
+                for _item in locations1
+                ] 
     # ! TODO since several datasets may be stored the returning by groups is better
     # but works for now
     context = {'request': request, 
@@ -70,7 +70,6 @@ async def _map(
     db:Session = Depends(get_db)
     ):  
         locations = get_all_art_items(db)
-        print(locations[0].dataset.name)
         locs = [json.loads(_item._data) for _item in locations]
         return json.dumps({"data": locs}, indent = 4)
 app.include_router(router.app, tags=["art"])

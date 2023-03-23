@@ -37,12 +37,11 @@ def insert_items(_path_to_input):
     db.add(_dataset)
     for _feature in _features2:
         _info = json.dumps(_feature)
-        _geom = shape(_feature.geometry).wkb 
+        print(_info)
         _id = str(uuid.uuid4()) 
         _item = Item(id = _id,
                     dataset_id = _ds_id,
-                    _data = _info,
-                    geometry = _geom
+                    _data = _info
                     )
         db.add(_item)
     db.commit() 
@@ -75,17 +74,16 @@ def check_database():
     cur.execute("SELECT datname FROM pg_database WHERE datistemplate = false;")
     dbs = cur.fetchall()
     print(dbs)
-    cur.execute("CREATE DATABASE mydb2;")
     # cur.execute("CREATE DATABASE database_name;")
-    if ('mydb2',) not in dbs:
-        cur.execute("CREATE DATABASE mydb2;")
+    if ('mydb',) not in dbs:
+        cur.execute("CREATE DATABASE mydb;")
         return "Database created successfully"
     else:
         return "Database already exists"
     
 
 def add_postgis():
-    conn = psycopg2.connect(database="mydb2", user="postgres", 
+    conn = psycopg2.connect(database="mydb", user="postgres", 
                             password="ljlkd%fFDFw12?Dg0vRiF", host="localhost", port="5432")
     conn.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
     # Create a cursor
@@ -99,7 +97,7 @@ def add_postgis():
     
 
 def _create_table():
-    conn = psycopg2.connect(database="mydb2", user="postgres", 
+    conn = psycopg2.connect(database="mydb", user="postgres", 
                             password="ljlkd%fFDFw12?Dg0vRiF", host="localhost", port="5432")
     conn.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
     # Create a cursor
@@ -121,7 +119,7 @@ def _create_table():
 
 def insert_mock_data():
     # Connect to the database
-    conn = psycopg2.connect(database="mydb2", user="postgres", 
+    conn = psycopg2.connect(database="mydb", user="postgres", 
                             password="ljlkd%fFDFw12?Dg0vRiF", host="localhost", port="5432")
     conn.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
 
@@ -157,14 +155,11 @@ def quick_tester(DUMMY_DATA):
     return _features2[0] 
 
 if __name__ == "__main__":
-    print('it')
     check_database()
     add_postgis()
     _create_table()
     insert_mock_data()
     startup_populate_db()
     _reader()
-    _JSON = quick_tester(DUMMY_DATA).geometry 
-    a, b = shape(_JSON).wkb,  shape(_JSON).wkt
-    print(a)
-    print(a, b)
+    _JSON = quick_tester(DUMMY_DATA)
+    geom = shape(_JSON)
