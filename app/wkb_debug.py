@@ -16,13 +16,6 @@ DATASET_CNT = None
 db = get_db()
 
 
-if not os.path.isfile(DB_PATH):
-    print('NO DB')
-    DATASET_CNT = 0
-
-Base.metadata.create_all(bind=engine)
-
-
 def data_loader(path_to):
     with open(path_to) as json_file:
         data = json.load(json_file)
@@ -36,24 +29,13 @@ def insert_items(_path_to_input):
     _rawdata = data_loader(_path_to_input)
     _features2 = to_geojson(_rawdata)
     
-    _ds_id = 0
-    _dataset = DataSet(id = _ds_id,
-                       name = _filename,
-                       owner = USER)
-    
-    db.add(_dataset)
     for _feature in _features2:
-        _geom = shape(_feature.geometry).wkb_hex
-        print(f'--------------------------------------------geom{_geom}')
+        _geom = shape(_feature.geometry)
+        # trades in hex encoded wkb 
+        _wkb = shape(_geom).wkb_hex
+        print(f'--------------------------------------------geom{_wkb}')
         _info = json.dumps(_feature)
-        _id = str(uuid.uuid4())
-        _item = Item(id = _id,
-                    dataset_id = _ds_id,
-                    _data = _info,
-                    geometry = _geom
-                    )
-        db.add(_item)
-    db.commit() 
-    db.close()
+
+
 if __name__ == "__main__":
     insert_items(DUMMY_DATA)

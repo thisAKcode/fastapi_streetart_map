@@ -1,25 +1,33 @@
 from typing import List, Optional, Generic, TypeVar
 from pydantic import BaseModel, Field
-from pydantic.generics import GenericModel  
+from pydantic.generics import GenericModel
 
 T = TypeVar('T')
 
-class ArtItemSchema(BaseModel):
+class DataSetSchema(BaseModel):
     id: Optional[int] = None
-    title: Optional[str] = None
-    description: Optional[str]=None
-    lat: Optional[float] = None
-    lon: Optional[float] = None
-    image_one: Optional[bytes] = None
-    image_two: Optional[str] = None
+    name: Optional[str] = None
+    owner: Optional[str] = None
+    items: List["ItemSchema"] = []
+    
+    class Config:
+        orm_mode = True
+
+
+class ItemSchema(BaseModel):
+    id: Optional[int] = None
+    dataset_id: Optional[int] = None
+    _data: Optional[str]=None
+    geometry: Optional[bytes]=None
+    dataset: Optional["DataSetSchema"] = None
 
     class Config:
         orm_mode = True
 
-class RequestArtItem(BaseModel):
-    parameter: ArtItemSchema = Field(...)
+class RequestItem(BaseModel):
+    parameter: ItemSchema = Field(...)
 
-class Response (GenericModel, Generic[T]):
+class Response(GenericModel, Generic[T]):
     code: str
     status: str
     message: str
