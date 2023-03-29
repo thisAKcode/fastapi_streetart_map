@@ -24,6 +24,7 @@ def check_database():
     # Check if the database exists
     cur.execute("SELECT datname FROM pg_database WHERE datistemplate = false;")
     dbs = cur.fetchall()
+    print(dbs)
     # cur.execute("CREATE DATABASE mydb2;")
     # cur.execute("CREATE DATABASE database_name;")
     if ('mydb2',) not in dbs:

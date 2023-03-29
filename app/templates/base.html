@@ -30,29 +30,6 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
 </head>
 
-<body>
-    <div>
-      <div>
-          <div>
-            <label >Content served to leaflet</label>
-            <select id="loc_option" name="loc_option" hx-get="/fillit" hx-target="#fillit" hx-indicator=".htmx-indicator">
-              <option value="0">---</option>
-              /*{% for location in ['one', 'two'] %}
-                <option value="{{ location }}">{{ location }}</option>
-              {% endfor %}
-              */
-            </select>
-          </div>       
-   <div id="mapid"></div>
-   <script src="{{url_for('static', filename='strart.js')}}"></script>
-          <div class>
-            <label>Form</label>
-            <div id="fillit" name="fillit" hx-post="/save_note" hx-target="#save_note" hx-indicator=".htmx-indicator"></div>
-          </div>
-          <div>
-      </div>
-    </div>
-</body>
 
   </body>
 </html>

@@ -20,7 +20,7 @@ async def favicon():
 # read sqlalchemy relationship chapter m to 1 https://docs.sqlalchemy.org/en/20/orm/basic_relationships.html#many-to-one 
 
 @app.post('/create', response_model = ItemSchema)
-async def create(request:RequestItem, dataset_id:int, db:Session=Depends(get_db)): # doesn't work wit RequestItem as first arg.
+async def create(request:Request, dataset_id:int, db:Session=Depends(get_db)): # doesn't work wit RequestItem as first arg.
     crud.create_art_item(db, dataset_id, art_item = request.parameter)
     return Response(code=200, status="Ok", message="ArtItem created succesfully").dict(exclude_none=True)
 

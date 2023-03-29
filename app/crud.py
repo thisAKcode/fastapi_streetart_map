@@ -37,7 +37,7 @@ def create_dataset(db:Session, dataset: DataSetSchema):
     
 # Create art_item data 
 def create_art_item(db:Session, dataset_id:int, art_item: ItemSchema):
-    # create dataset with id 10000 the default one
+    # create dataset with id 1000000 the default one
     dataset = db.query(DataSet).one_or_none(dataset_id = dataset_id)
     if not dataset:
         # create default dataset
