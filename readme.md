@@ -14,11 +14,12 @@ Access postges db with Python Fastapi backend and render map using Leaflet.js.
 
 ```bash
 git clone https://github.com/thisAKcode/fastapi_streetart_map.git
+python -m venv venv
+venv\Scripts\activate
 pip install -r requirements.txt
 cd app
 python dbpg2.py
 uvicorn main:app --reload
-
 ```
 ### Usage
 
