@@ -1,5 +1,5 @@
 import model
-import router
+from router import router
 import json
 from fastapi import FastAPI, Request, Depends
 from fastapi.responses import HTMLResponse
@@ -54,22 +54,23 @@ async def _map(
     # pass a list of dicts since templateResponse accept it as argument
     # each item  <class 'str'> representation of json object:
     #  {"type": "Feature", "geometry":.... }
-    locs_all = [jsonable_encoder(_item._data) 
+    locs_all = [jsonable_encoder(_item._data)
                 for _item in locations1
-                ] 
+                ]
     # ! TODO since several datasets may be stored the returning by groups is better
     # but works for now
-    context = {'request': request, 
+    context = {'request': request,
                'locs':locs_all}
-    return templates.TemplateResponse("map.html", context) 
+    return templates.TemplateResponse("map.html", context)
 
 
 @app.get("/map2/", response_class=HTMLResponse)
 async def _map(
     request:Request,
     db:Session = Depends(get_db)
-    ):  
+    ):
         locations = get_all_art_items(db)
         locs = [json.loads(_item._data) for _item in locations]
         return json.dumps({"data": locs}, indent = 4)
-app.include_router(router.app, tags=["art"])
+
+app.include_router(router)#, tags=["art"])
