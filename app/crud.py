@@ -43,7 +43,7 @@ def create_dataset(db:Session, dataset: DataSetSchema):
 def create_art_item(db:Session, dataset_id:int, art_item: ItemSchema):
     # create dataset with id 1000000 the default one
     dataset = db.query(DataSet).one_or_none(dataset_id = dataset_id)
-    if not dataset:
+    if dataset is None:
         # create default dataset
         raise DataSetNotFound('use default dataset')
     # create
@@ -71,10 +71,10 @@ def update_art_item(db:Session,
     
     # do i need to do wiht Session as blah blah?
     artitem = db.query(Item).one_or_none(id=art_item.id)
-    if not artitem:
+    if artitem is None:
         raise ArtItemNotFound('nothing to update')
     dataset = db.query(DataSet).one_or_none(dataset_id = dataset_id)
-    if not dataset:
+    if dataset is None:
        raise DataSetNotFound('use default dataset')
     # _art_item = get_art_item_by_id(db=db, art_item_id=art_item.id)
     _art_item = Item(id = art_item.id,
@@ -84,4 +84,5 @@ def update_art_item(db:Session,
     db.add(_art_item)
     db.commit()
     db.refresh(_art_item)
+
     return _art_item
