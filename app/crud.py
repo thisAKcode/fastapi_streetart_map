@@ -7,7 +7,11 @@ from schemas import ItemSchema, DataSetSchema
 class DataSetNotFound(Exception):
     pass
     # doctstring to add 
-                      
+
+class ArtItemNotFound(Exception):
+    pass
+    # docstring to add
+
 # Get All art_item data
 def get_all_art_items(db:Session, skip:int=0, _limit:int=30):
     # get all datasets 
@@ -39,14 +43,14 @@ def create_dataset(db:Session, dataset: DataSetSchema):
 def create_art_item(db:Session, dataset_id:int, art_item: ItemSchema):
     # create dataset with id 1000000 the default one
     dataset = db.query(DataSet).one_or_none(dataset_id = dataset_id)
-    if not dataset:
+    if dataset is None:
         # create default dataset
         raise DataSetNotFound('use default dataset')
     # create
     _art_item = Item(id =str(uuid.uuid4()),
-                        title=art_item.title, 
-                        _data = art_item._data,
-                        dataset = dataset) 
+                    _data = art_item._data,
+                    dataset = dataset,
+                    geometry = art_item.geometry) 
     db.add(_art_item)
     db.commit()
     db.refresh(_art_item)
@@ -61,19 +65,24 @@ def remove_art_item(db:Session, art_item_id:int):
     pass
 
 # update art_item data
-def update_art_item(db:Session, art_item_id:int, 
-                    title:str, description:str,
-                    lat:float, lon:float,
-                    image_one:bytes, image_two:str):
-    """_art_item = get_art_item_by_id(db=db, art_item_id=art_item_id)
-    _art_item.title = title
-    _art_item.description = description
-    _art_item.lat
-    _art_item.lon
-    _art_item.image_one
-    _art_item.image_two
+def update_art_item(db:Session,
+                    dataset_id:int,
+                    art_item: ItemSchema):
+    
+    # do i need to do wiht Session as blah blah?
+    artitem = db.query(Item).one_or_none(id=art_item.id)
+    if artitem is None:
+        raise ArtItemNotFound('nothing to update')
+    dataset = db.query(DataSet).one_or_none(dataset_id = dataset_id)
+    if dataset is None:
+       raise DataSetNotFound('use default dataset')
+    # _art_item = get_art_item_by_id(db=db, art_item_id=art_item.id)
+    _art_item = Item(id = art_item.id,
+                    _data=art_item.data,
+                    dataset=dataset,
+                    geometry = art_item.geometry)
+    db.add(_art_item)
     db.commit()
     db.refresh(_art_item)
+
     return _art_item
-    """
-    pass

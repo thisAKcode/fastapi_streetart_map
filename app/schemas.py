@@ -4,15 +4,6 @@ from pydantic.generics import GenericModel
 
 T = TypeVar('T')
 
-class DataSetSchema(BaseModel):
-    id: Optional[int] = None
-    name: Optional[str] = None
-    owner: Optional[str] = None
-    items: List["ItemSchema"] = []
-    
-    class Config:
-        orm_mode = True
-
 
 class ItemSchema(BaseModel):
     id: Optional[int] = None
@@ -23,6 +14,17 @@ class ItemSchema(BaseModel):
 
     class Config:
         orm_mode = True
+
+
+class DataSetSchema(BaseModel):
+    id: int
+    name: Optional[str] = None
+    owner: Optional[str] = None
+    items: List[ItemSchema] = []
+    
+    class Config:
+        orm_mode = True
+
 
 class RequestItem(BaseModel):
     parameter: ItemSchema = Field(...)
