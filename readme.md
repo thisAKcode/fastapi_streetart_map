@@ -41,7 +41,3 @@ Submit bug reports in issues, welcome with pull requests. Otherwise simple clone
 ### License
 https://fastapi.tiangolo.com/advanced/templates/
 FastAPI Street Art Map © 2022 by Aleksei Kupiakov is licensed under CC BY 4.0 
-
-
-
-
