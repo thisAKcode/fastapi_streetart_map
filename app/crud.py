@@ -5,16 +5,10 @@ from config import USER
 from schemas import ItemSchema, DataSetSchema
 
 class DataSetNotFound(Exception):
-    pass
-    # doctstring to add
+    """Used when no data set is found on dataset id"""
 
-class ArtItemNotFound(Exception):
-    pass
-    # docstring to add
 
-# Get All art_item data
 def get_all_art_items(db:Session, skip:int=0, _limit:int=30):
-    # get all datasets
     datasets = db.query(DataSet).all()
     #_items = [db.query(Item).filter_by(dataset_id =_subdataset.id).all()
     #    for _subdataset in datasets]
@@ -22,11 +16,11 @@ def get_all_art_items(db:Session, skip:int=0, _limit:int=30):
     return _items
 
 
-# get by id art_item
+
 def get_art_item_by_id(db:Session, art_item_id:str):
     return db.query(Item).filter(Item.id == int(art_item_id)).first()
 
-# Create dataset
+
 def create_dataset(db:Session, dataset: DataSetSchema):
     print(f"create dataset {dataset}")
     datasets = [_dataset.name for _dataset in db.query(DataSet).all()]
@@ -39,7 +33,7 @@ def create_dataset(db:Session, dataset: DataSetSchema):
     db.refresh(_dataset)
     return _dataset
 
-# Create art_item data
+
 def create_art_item(db:Session, dataset_id:int, art_item: ItemSchema):
     # create dataset with id 1000000 the default one
     dataset = db.query(DataSet).one_or_none(dataset_id = dataset_id)
@@ -56,7 +50,7 @@ def create_art_item(db:Session, dataset_id:int, art_item: ItemSchema):
     db.refresh(_art_item)
     return _art_item
 
-# Remove art_item data
+
 def remove_art_item(db:Session, art_item_id:int):
     """_art_item = get_art_item_by_id(db=db, art_item_id = art_item_id)
     db.delete(_art_item)
@@ -64,7 +58,7 @@ def remove_art_item(db:Session, art_item_id:int):
     """
     pass
 
-# update art_item data
+
 def update_art_item(db: Session,
                     art_item: ItemSchema):
 
