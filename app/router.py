@@ -20,7 +20,7 @@ async def favicon():
 # read sqlalchemy relationship chapter m to 1 https://docs.sqlalchemy.org/en/20/orm/basic_relationships.html#many-to-one
 
 @router.post('/create_item')#, response_model = ItemSchema)
-async def create(request:Request, 
+async def create(request:Request,
                 dataset_id:int,
                 id:str,
                 _data:str,
@@ -28,10 +28,10 @@ async def create(request:Request,
                 db:Session=Depends(get_db)): # doesn't work wit RequestItem as first arg.
     _art_item = ItemSchema
     _art_item.dataset_id = dataset_id
-    _art_item.id = id 
-    _art_item._data = _data 
-    _art_item.geometry = geometry 
-    # figure out whether you need attribute title or not 
+    _art_item.id = id
+    _art_item._data = _data
+    _art_item.geometry = geometry
+    # figure out whether you need attribute title or not
     # crud.create_art_item(db, dataset_id, art_item = request.parameter)
     crud.create_art_item(db, dataset_id, art_item = _art_item)
     return Response(code=200, status="Ok", message="ArtItem created succesfully").dict(exclude_none=True)
@@ -56,15 +56,12 @@ async def update_art_item(request:Request,
                         _data:str,
                         geometry:bytes,
                         db:Session=Depends(get_db)):
-    _art_item = ItemSchema
-    _art_item.id = request.parameter.id,
-    _art_item.dataset_id = request.parameter.dataset_id
-    _art_item._data = request.parameter._data 
-    _art_item.geometry = request.parameter.geometry 
-    crud.update_art_item(
-            db,
-            dataset_id,
-            art_item = _art_item)
+    _art_item = ItemSchema(
+        dataset_id=request.parameter.dataset_id,
+        _data=request.parameter._data,
+        geometry=request.parameter.geometry
+    )
+    crud.update_art_item(db, _art_item)
     return Response(code=200, status="Ok",
                     message="Success update data",
                     result=_art_item).dict(exclude_none=True)
