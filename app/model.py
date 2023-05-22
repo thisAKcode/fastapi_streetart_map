@@ -16,7 +16,6 @@ class DataSet(Base):
 class Item(Base):
     __tablename__ = 'item'
     # properties are dumped into geojson except mandatory fields:
-    #  id, creator, from_date, to_date
     id = Column(String, primary_key=True)
     # point, polyline or polygon geometries with properties stored in geojson
     # geometry: standard    https://geojson.org/#:~:text=GeoJSON%20supports%20the%20following%20geometry,additional%20properties%20are%20Feature%20objects.
